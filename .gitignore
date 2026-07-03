@@ -1,0 +1,12 @@
+# Rust build files
+backend/target/
+
+# Environment files
+backend/.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
