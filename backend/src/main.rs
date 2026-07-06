@@ -7,7 +7,10 @@ use axum::{
     routing::post,
 };
 
-use routes::auth::register;
+use routes::auth::{
+    register,
+    login,
+};
 
 #[tokio::main]
 async fn main() {
@@ -15,7 +18,8 @@ async fn main() {
     dotenvy::dotenv().ok();
 
     let app = Router::new()
-        .route("/register", post(register));
+    .route("/register", post(register))
+    .route("/login", post(login));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
