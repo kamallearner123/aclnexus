@@ -19,3 +19,6 @@ dotenvy = "0.15"
 bcrypt = "0.17"
 
 uuid = { version = "1", features = ["v4"] }
+
+jsonwebtoken = "9"
+chrono = "0.4"

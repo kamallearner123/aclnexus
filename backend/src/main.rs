@@ -1,6 +1,8 @@
 mod routes;
 mod models;
 mod database;
+mod utils;
+mod middleware;
 
 use axum::{
     Router,
@@ -10,6 +12,7 @@ use axum::{
 use routes::auth::{
     register,
     login,
+    profile,
 };
 
 #[tokio::main]
@@ -19,7 +22,8 @@ async fn main() {
 
     let app = Router::new()
     .route("/register", post(register))
-    .route("/login", post(login));
+    .route("/login", post(login))
+    .route("/profile", axum::routing::get(profile));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await

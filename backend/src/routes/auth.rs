@@ -8,6 +8,8 @@ use sqlx::PgPool;
 
 use crate::models::user::{RegisterUser, LoginUser};
 
+use crate::utils::jwt::create_token;
+
 pub async fn register(
     Json(payload): Json<RegisterUser>,
 ) -> impl IntoResponse {
@@ -79,17 +81,26 @@ pub async fn login(
 
             if valid {
 
-                Json("Login Successful")
+    let token =
+        create_token(
+            &payload.email
+        );
 
-            } else {
+    Json(token)
 
-                Json("Invalid Credentials")
-            }
+} else {
+
+    Json("Invalid Credentials".to_string())
+}
         }
 
         None => {
 
-            Json("User Not Found")
+            Json("User Not Found".to_string())
         }
     }
+}
+pub async fn profile() -> impl IntoResponse {
+
+    Json("Protected Profile Route")
 }
