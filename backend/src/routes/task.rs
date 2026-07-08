@@ -6,7 +6,10 @@ use axum::{
 use sqlx::PgPool;
 
 
-use crate::models::task::CreateTask;
+use crate::models::task::{
+    CreateTask,
+    UpdateTask,
+};
 
 pub async fn create_task(
     Json(payload): Json<CreateTask>,
@@ -72,4 +75,57 @@ pub async fn get_tasks() -> impl IntoResponse {
         .unwrap();
 
     Json(tasks)
+}
+
+pub async fn update_task(
+    axum::extract::Path(id): axum::extract::Path<i32>,
+    Json(payload): Json<UpdateTask>,
+) -> impl IntoResponse {
+
+    let database_url =
+        std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL not found");
+
+    let pool =
+        PgPool::connect(&database_url)
+            .await
+            .unwrap();
+
+    sqlx::query(
+        "UPDATE tasks
+         SET status = $1
+         WHERE id = $2"
+    )
+    .bind(payload.status)
+    .bind(id)
+    .execute(&pool)
+    .await
+    .unwrap();
+
+    Json("Task Updated")
+}
+
+pub async fn delete_task(
+    axum::extract::Path(id): axum::extract::Path<i32>,
+) -> impl IntoResponse {
+
+    let database_url =
+        std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL not found");
+
+    let pool =
+        PgPool::connect(&database_url)
+            .await
+            .unwrap();
+
+    sqlx::query(
+        "DELETE FROM tasks
+         WHERE id = $1"
+    )
+    .bind(id)
+    .execute(&pool)
+    .await
+    .unwrap();
+
+    Json("Task Deleted")
 }

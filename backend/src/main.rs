@@ -6,7 +6,7 @@ mod middleware;
 
 use axum::{
     Router,
-    routing::post,
+    routing::{post, put},
 };
 
 use routes::auth::{
@@ -23,6 +23,8 @@ use routes::project::{
 use routes::task::{
     create_task,
     get_tasks,
+    update_task,
+    delete_task,
 };
 
 
@@ -38,7 +40,9 @@ async fn main() {
     .route("/projects", post(create_project))
     .route("/projects", axum::routing::get(get_projects))
     .route("/tasks", post(create_task))
-    .route("/tasks", axum::routing::get(get_tasks));
+    .route("/tasks", axum::routing::get(get_tasks))
+    .route("/tasks/{id}", axum::routing::put(update_task))
+    .route("/tasks/{id}", axum::routing::delete(delete_task));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
