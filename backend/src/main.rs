@@ -20,6 +20,12 @@ use routes::project::{
     get_projects,
 };
 
+use routes::task::{
+    create_task,
+    get_tasks,
+};
+
+
 #[tokio::main]
 async fn main() {
 
@@ -30,7 +36,9 @@ async fn main() {
     .route("/login", post(login))
     .route("/profile", axum::routing::get(profile))
     .route("/projects", post(create_project))
-    .route("/projects", axum::routing::get(get_projects));
+    .route("/projects", axum::routing::get(get_projects))
+    .route("/tasks", post(create_task))
+    .route("/tasks", axum::routing::get(get_tasks));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
