@@ -4,3 +4,4 @@ pub mod task;
 pub mod milestone;
 pub mod team_member;
 pub mod dashboard;
+pub mod role;

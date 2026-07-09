@@ -39,6 +39,10 @@ use routes::team_member::{
     delete_team_member,
 };
 use routes::dashboard::get_dashboard;
+use routes::role::{
+    check_role,
+    admin_only,
+};
 
 #[tokio::main]
 async fn main() {
@@ -63,7 +67,9 @@ async fn main() {
     .route("/users", axum::routing::get(get_team_members))
     .route("/users/{id}", axum::routing::put(update_team_member))
     .route("/users/{id}", axum::routing::delete(delete_team_member))
-    .route("/dashboard", axum::routing::get(get_dashboard));
+    .route("/dashboard", axum::routing::get(get_dashboard))
+    .route("/check-role", post(check_role))
+    .route("/admin", post(admin_only));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
