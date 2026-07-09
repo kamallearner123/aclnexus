@@ -32,7 +32,12 @@ use routes::milestone::{
     update_milestone,
     delete_milestone,
 };
-
+use routes::team_member::{
+    create_team_member,
+    get_team_members,
+    update_team_member,
+    delete_team_member,
+};
 
 #[tokio::main]
 async fn main() {
@@ -52,7 +57,11 @@ async fn main() {
     .route("/milestones", post(create_milestone))
     .route("/milestones", axum::routing::get(get_milestones))
     .route("/milestones/{id}", axum::routing::put(update_milestone))
-    .route("/milestones/{id}", axum::routing::delete(delete_milestone));
+    .route("/milestones/{id}", axum::routing::delete(delete_milestone))
+    .route("/users", post(create_team_member))
+    .route("/users", axum::routing::get(get_team_members))
+    .route("/users/{id}", axum::routing::put(update_team_member))
+    .route("/users/{id}", axum::routing::delete(delete_team_member));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
