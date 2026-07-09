@@ -38,6 +38,7 @@ use routes::team_member::{
     update_team_member,
     delete_team_member,
 };
+use routes::dashboard::get_dashboard;
 
 #[tokio::main]
 async fn main() {
@@ -61,7 +62,8 @@ async fn main() {
     .route("/users", post(create_team_member))
     .route("/users", axum::routing::get(get_team_members))
     .route("/users/{id}", axum::routing::put(update_team_member))
-    .route("/users/{id}", axum::routing::delete(delete_team_member));
+    .route("/users/{id}", axum::routing::delete(delete_team_member))
+    .route("/dashboard", axum::routing::get(get_dashboard));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
