@@ -6,3 +6,4 @@ pub mod team_member;
 pub mod dashboard;
 pub mod role;
 pub mod activity_log;
+pub mod analytics;

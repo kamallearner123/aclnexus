@@ -44,6 +44,7 @@ use routes::role::{
     admin_only,
 };
 use routes::activity_log::get_logs;
+use routes::analytics::get_analytics;
 
 #[tokio::main]
 async fn main() {
@@ -71,7 +72,8 @@ async fn main() {
     .route("/dashboard", axum::routing::get(get_dashboard))
     .route("/check-role", post(check_role))
     .route("/admin", post(admin_only))
-    .route("/logs", axum::routing::get(get_logs));
+    .route("/logs", axum::routing::get(get_logs))
+    .route("/analytics", axum::routing::get(get_analytics));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
