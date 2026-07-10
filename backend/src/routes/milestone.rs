@@ -32,10 +32,19 @@ pub async fn create_milestone(
     .bind(payload.milestone_name)
     .bind(payload.due_date)
     .execute(&pool)
-    .await
-    .unwrap();
+.await
+.unwrap();
 
-    Json("Milestone Created")
+sqlx::query(
+    "INSERT INTO activity_logs(activity)
+     VALUES ($1)"
+)
+.bind("Milestone Created")
+.execute(&pool)
+.await
+.unwrap();
+
+Json("Milestone Created")
 }
 
 use serde::Serialize;

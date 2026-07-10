@@ -5,3 +5,4 @@ pub mod milestone;
 pub mod team_member;
 pub mod dashboard;
 pub mod role;
+pub mod activity_log;

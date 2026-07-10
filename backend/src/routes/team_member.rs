@@ -30,10 +30,19 @@ pub async fn create_team_member(
     .bind(payload.name)
     .bind(payload.email)
     .execute(&pool)
-    .await
-    .unwrap();
+.await
+.unwrap();
 
-    Json("Team Member Added")
+sqlx::query(
+    "INSERT INTO activity_logs(activity)
+     VALUES ($1)"
+)
+.bind("Team Member Added")
+.execute(&pool)
+.await
+.unwrap();
+
+Json("Team Member Added")
 }
 
 use serde::Serialize;

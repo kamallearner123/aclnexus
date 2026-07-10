@@ -38,10 +38,19 @@ pub async fn create_project(
     .bind(payload.description)
     .bind(payload.status)
     .execute(&pool)
-    .await
-    .unwrap();
+.await
+.unwrap();
 
-    Json("Project Created")
+sqlx::query(
+    "INSERT INTO activity_logs(activity)
+     VALUES ($1)"
+)
+.bind("Project Created")
+.execute(&pool)
+.await
+.unwrap();
+
+Json("Project Created")
 }
 pub async fn get_projects() -> impl IntoResponse {
 

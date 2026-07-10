@@ -34,10 +34,19 @@ pub async fn create_task(
     .bind(payload.status)
     .bind(payload.due_date)
     .execute(&pool)
-    .await
-    .unwrap();
+.await
+.unwrap();
 
-    Json("Task Created")
+sqlx::query(
+    "INSERT INTO activity_logs(activity)
+     VALUES ($1)"
+)
+.bind("Task Created")
+.execute(&pool)
+.await
+.unwrap();
+
+Json("Task Created")
 }
 
 use serde::Serialize;
