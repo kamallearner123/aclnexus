@@ -36,145 +36,148 @@ function App() {
         email,
       })
       .then((res) => {
-  console.log("ROLE:", res.data);
-  setRole(res.data);
-})
+        console.log("ROLE:", res.data);
+        setRole(res.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
   return (
-  <BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                background: "#f8fafc",
+                minHeight: "100vh",
+              }}
+            >
+              <Sidebar role={role} />
 
-    <Routes>
+              <div
+                style={{
+                  flex: 1,
+                  marginLeft: "270px",
+                  transition: "margin-left 0.3s ease",
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "calc(100% - 270px)",
+                }}
+              >
+                <Navbar />
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
-      <Route
-  path="/register"
-  element={<Register />}
-/>
-<Route
-  path="/forgot-password"
-  element={<ForgotPassword />}
-/>
-<Route
-  path="/change-password"
-  element={
-    <ProtectedRoute>
-      <ChangePassword />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/profile"
-  element={
-    <ProtectedRoute>
-      <Profile />
-    </ProtectedRoute>
-  }
-/>
-      <Route
-        path="*"
-        element={
-          <div style={{ display: "flex" }}>
+                <main
+                  style={{
+                    flex: 1,
+                    padding: "0",
+                    overflowY: "auto",
+                  }}
+                >
+                  <Routes>
+                    <Route path="/notifications" element={<Notifications />} />
 
-            <Sidebar role={role} />
+                    <Route
+                      path="/"
+                      element={
+                        <ProtectedRoute>
+                          {role === "Admin" ? (
+                            <AdminDashboard />
+                          ) : role === "Manager" ? (
+                            <ManagerDashboard />
+                          ) : role === "Employee" ? (
+                            <EmployeeDashboard />
+                          ) : (
+                            <Dashboard />
+                          )}
+                        </ProtectedRoute>
+                      }
+                    />
 
-            <div style={{ flex: 1 }}>
-              <Navbar />
+                    <Route
+                      path="/projects"
+                      element={
+                        <ProtectedRoute>
+                          <Projects />
+                        </ProtectedRoute>
+                      }
+                    />
 
-              <Routes>
+                    <Route
+                      path="/tasks"
+                      element={
+                        <ProtectedRoute>
+                          <Tasks />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                <Route
-                  path="/notifications"
-                  element={<Notifications />}
-                />
+                    <Route
+                      path="/team-members"
+                      element={
+                        <ProtectedRoute>
+                          <TeamMembers />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      {role === "Admin" ? (
-                        <AdminDashboard />
-                      ) : role === "Manager" ? (
-                        <ManagerDashboard />
-                      ) : role === "Employee" ? (
-                        <EmployeeDashboard />
-                      ) : (
-                        <Dashboard />
-                      )}
-                    </ProtectedRoute>
-                  }
-                />
+                    <Route
+                      path="/analytics"
+                      element={
+                        <ProtectedRoute>
+                          <Analytics />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                <Route
-                  path="/projects"
-                  element={
-                    <ProtectedRoute>
-                      <Projects />
-                    </ProtectedRoute>
-                  }
-                />
+                    <Route
+                      path="/milestones"
+                      element={
+                        <ProtectedRoute>
+                          <Milestones />
+                        </ProtectedRoute>
+                      }
+                    />
 
-                <Route
-                  path="/tasks"
-                  element={
-                    <ProtectedRoute>
-                      <Tasks />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/team-members"
-                  element={
-                    <ProtectedRoute>
-                      <TeamMembers />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/analytics"
-                  element={
-                    <ProtectedRoute>
-                      <Analytics />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/milestones"
-                  element={
-                    <ProtectedRoute>
-                      <Milestones />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/logs"
-                  element={
-                    <ProtectedRoute>
-                      <ActivityLogs />
-                    </ProtectedRoute>
-                  }
-                />
-
-              </Routes>
-
+                    <Route
+                      path="/activity-logs"
+                      element={
+                        <ProtectedRoute>
+                          <ActivityLogs />
+                        </ProtectedRoute>
+                      }
+                    />
+                  </Routes>
+                </main>
+              </div>
             </div>
-
-          </div>
-        }
-      />
-
-    </Routes>
-
-  </BrowserRouter>
-);
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
