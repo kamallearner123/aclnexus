@@ -69,15 +69,24 @@ pub async fn get_analytics() -> impl IntoResponse {
         .fetch_one(&pool)
         .await
         .unwrap();
+    let completion_percentage =
+    if total_tasks.0 > 0 {
+        (completed_tasks.0 as f64
+            / total_tasks.0 as f64)
+            * 100.0
+    } else {
+        0.0
+    };
 
     Json(
         Analytics {
-            total_projects: total_projects.0,
-            active_projects: active_projects.0,
-            completed_projects: completed_projects.0,
-            total_tasks: total_tasks.0,
-            completed_tasks: completed_tasks.0,
-            pending_tasks: pending_tasks.0,
-        }
+    total_projects: total_projects.0,
+    active_projects: active_projects.0,
+    completed_projects: completed_projects.0,
+    total_tasks: total_tasks.0,
+    completed_tasks: completed_tasks.0,
+    pending_tasks: pending_tasks.0,
+    project_completion: completion_percentage,
+}
     )
 }

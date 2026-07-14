@@ -76,3 +76,36 @@ pub async fn get_projects() -> impl IntoResponse {
 
     Json(projects)
 }
+pub async fn delete_project(
+    axum::extract::Path(id): axum::extract::Path<i32>,
+) -> impl IntoResponse {
+
+    let database_url =
+        std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL not found");
+
+    let pool =
+        PgPool::connect(&database_url)
+            .await
+            .unwrap();
+
+    sqlx::query(
+        "DELETE FROM projects
+         WHERE id = $1"
+    )
+    .bind(id)
+    .execute(&pool)
+    .await
+    .unwrap();
+
+    sqlx::query(
+        "INSERT INTO activity_logs(activity)
+         VALUES ($1)"
+    )
+    .bind("Project Deleted")
+    .execute(&pool)
+    .await
+    .unwrap();
+
+    Json("Project Deleted")
+}

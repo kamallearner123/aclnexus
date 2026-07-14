@@ -14,3 +14,23 @@ pub struct LoginUser {
     pub email: String,
     pub password: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ResetPassword {
+    pub email: String,
+    pub password: String,
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ChangePassword {
+    pub email: String,
+    pub password: String,
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SendOtp {
+    pub email: String,
+}
+#[derive(Debug, Serialize, Deserialize)]
+pub struct VerifyOtp {
+    pub email: String,
+    pub otp: String,
+}

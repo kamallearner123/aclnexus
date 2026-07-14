@@ -8,4 +8,5 @@ pub struct Analytics {
     pub total_tasks: i64,
     pub completed_tasks: i64,
     pub pending_tasks: i64,
+    pub project_completion: f64,
 }

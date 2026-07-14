@@ -6,7 +6,9 @@ pub struct CreateTask {
     pub task_name: String,
     pub status: String,
     pub due_date: String,
+    pub assigned_to: i32,
 }
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateTask {
     pub status: String,

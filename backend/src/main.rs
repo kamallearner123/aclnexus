@@ -3,6 +3,11 @@ mod models;
 mod database;
 mod utils;
 mod middleware;
+use tower_http::cors::{CorsLayer, Any};
+use axum::http::{
+    Method,
+    header,
+};
 
 use axum::{
     Router,
@@ -13,11 +18,17 @@ use routes::auth::{
     register,
     login,
     profile,
+    change_password,
+    reset_password,
+    send_otp,
+    verify_otp,
+
 };
 
 use routes::project::{
     create_project,
     get_projects,
+    delete_project,
 };
 
 use routes::task::{
@@ -25,6 +36,7 @@ use routes::task::{
     get_tasks,
     update_task,
     delete_task,
+    get_employee_tasks,
 };
 use routes::milestone::{
     create_milestone,
@@ -51,16 +63,47 @@ async fn main() {
 
     dotenvy::dotenv().ok();
 
+    let cors = CorsLayer::new()
+        .allow_origin(
+            "http://localhost:5173"
+                .parse::<axum::http::HeaderValue>()
+                .unwrap()
+        )
+        .allow_methods([
+            Method::GET,
+            Method::POST,
+            Method::PUT,
+            Method::DELETE,
+        ]);
+    let cors = CorsLayer::new()
+    .allow_origin(Any)
+    .allow_methods([
+        Method::GET,
+        Method::POST,
+        Method::PUT,
+        Method::DELETE,
+    ])
+    .allow_headers([
+        header::CONTENT_TYPE,
+        header::AUTHORIZATION,
+    ]);
+
     let app = Router::new()
     .route("/register", post(register))
     .route("/login", post(login))
-    .route("/profile", axum::routing::get(profile))
+    .route("/reset-password", post(reset_password))
+    .route("/send-otp", post(send_otp))
+    .route("/verify-otp", post(verify_otp))
+    .route("/profile", post(profile))
+    .route("/change-password", post(change_password))
     .route("/projects", post(create_project))
     .route("/projects", axum::routing::get(get_projects))
+    .route("/projects/{id}", axum::routing::delete(delete_project))
     .route("/tasks", post(create_task))
     .route("/tasks", axum::routing::get(get_tasks))
     .route("/tasks/{id}", axum::routing::put(update_task))
     .route("/tasks/{id}", axum::routing::delete(delete_task))
+    .route("/employee-tasks/{id}", axum::routing::get(get_employee_tasks))
     .route("/milestones", post(create_milestone))
     .route("/milestones", axum::routing::get(get_milestones))
     .route("/milestones/{id}", axum::routing::put(update_milestone))
@@ -73,7 +116,8 @@ async fn main() {
     .route("/check-role", post(check_role))
     .route("/admin", post(admin_only))
     .route("/logs", axum::routing::get(get_logs))
-    .route("/analytics", axum::routing::get(get_analytics));
+    .route("/analytics", axum::routing::get(get_analytics))
+    .layer(cors);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
         .await
