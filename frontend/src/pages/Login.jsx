@@ -166,8 +166,8 @@ function Login() {
         >
           <Box
             sx={{
-              background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-              borderRadius: "16px",
+              background: "linear-gradient(135deg, rgb(4, 4, 51) 0%, rgb(14, 8, 29) 100%)",
+              borderRadius: "30px",
               padding: "16px",
               display: "inline-flex",
               alignItems: "center",
@@ -175,7 +175,7 @@ function Login() {
               marginBottom: "16px",
             }}
           >
-            <img src={logo} alt="ACL Logo" width="60" style={{ filter: "brightness(0) invert(1)" }} />
+            <img src={logo} alt="ACL Logo" width="100"  />
           </Box>
 
           <Typography

@@ -59,17 +59,27 @@ function Sidebar({ role }) {
       {/* Logo Section */}
       <div style={{ textAlign: "center", marginBottom: "32px" }}>
         <div
-          style={{
-            background: "rgba(59, 130, 246, 0.15)",
-            borderRadius: "12px",
-            padding: "12px",
-            marginBottom: "16px",
-            border: "2px solid rgba(59, 130, 246, 0.5)",
-            transition: "all 0.3s ease",
-          }}
-        >
-          <img src={logo} alt="ACL Logo" width="50" style={{ display: "block" }} />
-        </div>
+  style={{
+    background: "rgba(59,130,246,0.15)",
+    borderRadius: "12px",
+    padding: "12px",
+    marginBottom: "16px",
+    border: "2px solid rgba(59,130,246,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  <img
+    src={logo}
+    alt="ACL Logo"
+    width="70"
+    style={{
+      display: "block",
+      margin: "0 auto",
+    }}
+  />
+</div>
         {isOpen && (
           <>
             <h2
